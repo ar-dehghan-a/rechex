@@ -9,8 +9,7 @@ module.exports = {
   entry: {
     popup: './src/popup/index.tsx',
     options: './src/options/index.tsx',
-    background: './src/background.ts',
-    contentScripts: './src/contentScripts.ts'
+    ...getEntry(['background', 'contentScripts'])
   },
   output: {
     filename: '[name].js',
@@ -23,7 +22,7 @@ module.exports = {
         test: /\.(ts|tsx|js)$/,
         exclude: /node_modules/,
         resolve: {
-          extensions: ['.ts', '.tsx', '.js']
+          extensions: ['.ts', '.tsx', '.js', 'jsx']
         },
         use: 'ts-loader'
       },
@@ -38,7 +37,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js']
+    extensions: ['.ts', '.tsx', '.js', 'jsx']
   },
   plugins: [
     new webpack.ProgressPlugin(),
@@ -56,6 +55,15 @@ module.exports = {
     ]
   }
 };
+
+
+function getEntry(chunks) {
+  const entries = {};
+  for (const entry of chunks) {
+    Object.assign(entries, { [`${entry}`]: `./src/${entry}.ts` });
+  }
+  return entries;
+}
 
 function getHtmlPlugins(chunks) {
   return chunks.map(
