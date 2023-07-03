@@ -1,1 +1,3 @@
-console.log('hello from content script');
+chrome.storage.local.get('message').then(res => {
+  console.log(res);
+});

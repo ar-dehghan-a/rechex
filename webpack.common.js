@@ -7,14 +7,17 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
-    popup: './src/popup/index.tsx',
-    options: './src/options/index.tsx',
-    ...getEntry(['background', 'contentScripts'])
+    popup: './src/app/pages/popup/index.tsx',
+    options: './src/app/pages/options/index.tsx',
+    ...getEntry(['background', 'contentScripts'], 'ts')
   },
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, './build'),
     clean: true
+  },
+  experiments: {
+    topLevelAwait: true
   },
   module: {
     rules: [
@@ -27,7 +30,7 @@ module.exports = {
         use: 'ts-loader'
       },
       {
-        test: /\.s[ac]ss$/i,
+        test: /\.(s[ac]ss|css)$/i,
         use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
       },
       {
@@ -56,11 +59,10 @@ module.exports = {
   }
 };
 
-
-function getEntry(chunks) {
+function getEntry(chunks, ext) {
   const entries = {};
   for (const entry of chunks) {
-    Object.assign(entries, { [`${entry}`]: `./src/${entry}.ts` });
+    Object.assign(entries, { [`${entry}`]: `./src/${entry}.${ext}` });
   }
   return entries;
 }

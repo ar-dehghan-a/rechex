@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Extension Name",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Extension Description",
   "icons": {
     "16": "icons/icon.png",
@@ -18,11 +18,17 @@
     "default_popup": "popup.html"
   },
   "options_page": "options.html",
-  "permissions": ["storage"],
+  "permissions": [
+    "storage"
+  ],
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["contentScripts.js"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "contentScripts.js"
+      ]
     }
   ]
 }
