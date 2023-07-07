@@ -25,11 +25,11 @@ export const localStorageContext = React.createContext<StorageContextType>({
 const LocalStorageProvider: React.FC<Props> = ({children}) => {
   const [data, setData] = React.useState<Data>(localStorage)
 
-  const changeData = (valueChanged: Data) => {
+  const changeData = React.useCallback((valueChanged: Data) => {
     setData(prev => ({...prev, ...valueChanged}))
-  }
+  }, [])
 
-  const saveData = async () => {
+  const saveData = React.useCallback(async () => {
     let changes = {}
     for (const item in data) {
       if (localStorage[item] !== data[item])
@@ -39,7 +39,7 @@ const LocalStorageProvider: React.FC<Props> = ({children}) => {
     await chrome.storage.local.set(changes)
     const newLocalStorage = await chrome.storage.local.get()
     localStorage = newLocalStorage
-  }
+  }, [data, localStorage])
 
   return (
     <localStorageContext.Provider value={{data, changeData, saveData}}>

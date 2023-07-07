@@ -1,9 +1,9 @@
-import React from 'react';
-import useLocalStorage from '../../hooks/useLocalStorage';
+import React from 'react'
+import useLocalStorage from '../../hooks/useLocalStorage'
 
-const App = () => {
-  const { data, changeData, saveData } = useLocalStorage();
-  const { message } = data;
+const App: React.FC = () => {
+  const {data, changeData, saveData} = useLocalStorage(['message'])
+  const {message} = data
 
   return (
     <div>
@@ -12,13 +12,13 @@ const App = () => {
       <input
         type="text"
         value={message}
-        onChange={e => changeData({ message: e.target.value })}
+        onChange={e => changeData({message: e.target.value})}
       />
       <button type="button" onClick={saveData}>
         save
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App
