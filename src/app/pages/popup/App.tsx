@@ -2,8 +2,7 @@ import React from 'react'
 import useLocalStorage from '../../hooks/useLocalStorage'
 
 const App: React.FC = () => {
-  const {data, changeData, saveData} = useLocalStorage(['message'])
-  const {message} = data
+  const [message, setMessage, saveData] = useLocalStorage('message')
 
   return (
     <div>
@@ -12,7 +11,7 @@ const App: React.FC = () => {
       <input
         type="text"
         value={message}
-        onChange={e => changeData({message: e.target.value})}
+        onChange={e => setMessage(e.target.value)}
       />
       <button type="button" onClick={saveData}>
         save
