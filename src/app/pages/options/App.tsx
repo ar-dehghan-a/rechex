@@ -1,8 +1,9 @@
 import React from 'react'
-import useLocalStorage from '../../hooks/useLocalStorage'
+import useLocalStorage, {useSaveStorage} from '../../hooks/useLocalStorage'
 
 const App: React.FC = () => {
-  const [data, setData, saveData] = useLocalStorage()
+  const [data, setData] = useLocalStorage()
+  const saveData = useSaveStorage()
   const {message, exVersion} = data
 
   return (

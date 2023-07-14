@@ -1,10 +1,13 @@
 import React from 'react'
-import {localStorageContext} from '../context/localStorageProvider'
+import {
+  localStorageContext,
+  saveStorageContext,
+} from '../context/localStorageProvider'
 
-type hookType = [any, (data: any) => void, () => void]
+type hookType = [any, (data: any) => void]
 
 const useLocalStorage = (variables: string[] | string | null = null): hookType => {
-  const {data, changeData, saveData} = React.useContext(localStorageContext)
+  const {data, changeData} = React.useContext(localStorageContext)
   const keys = Object.keys(data)
 
   if (variables !== null && Array.isArray(variables)) {
@@ -18,7 +21,7 @@ const useLocalStorage = (variables: string[] | string | null = null): hookType =
       Object.assign(filteredData, {[variable]: data[variable] || ''})
     })
 
-    return [filteredData, changeData, saveData]
+    return [filteredData, changeData]
   }
 
   if (variables !== null && typeof variables === 'string') {
@@ -31,10 +34,16 @@ const useLocalStorage = (variables: string[] | string | null = null): hookType =
       changeData({[variables]: data})
     }
 
-    return [data[variables], setVariable, saveData]
+    return [data[variables], setVariable]
   }
 
-  return [data, changeData, saveData]
+  return [data, changeData]
+}
+
+export const useSaveStorage = () => {
+  const saveData = React.useContext(saveStorageContext)
+
+  return saveData
 }
 
 export default useLocalStorage

@@ -7,11 +7,9 @@ type Props = {
 type Data = {
   [key: string]: any
 }
-
 type StorageContextType = {
   data: Data
   changeData: (valueChanged: Data) => void
-  saveData: () => void
 }
 
 let localStorage = await chrome.storage.local.get()
@@ -19,8 +17,8 @@ let localStorage = await chrome.storage.local.get()
 export const localStorageContext = React.createContext<StorageContextType>({
   data: {},
   changeData: () => {},
-  saveData: () => {},
 })
+export const saveStorageContext = React.createContext(() => {})
 
 const LocalStorageProvider: React.FC<Props> = ({children}) => {
   const [data, setData] = React.useState<Data>(localStorage)
@@ -42,8 +40,10 @@ const LocalStorageProvider: React.FC<Props> = ({children}) => {
   }, [data, localStorage])
 
   return (
-    <localStorageContext.Provider value={{data, changeData, saveData}}>
-      {children}
+    <localStorageContext.Provider value={{data, changeData}}>
+      <saveStorageContext.Provider value={saveData}>
+        {children}
+      </saveStorageContext.Provider>
     </localStorageContext.Provider>
   )
 }
