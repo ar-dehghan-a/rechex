@@ -1,49 +1,27 @@
-import React from 'react'
-import {
-  localStorageContext,
-  saveStorageContext,
-} from '../context/localStorageProvider'
+import {useContext} from 'react'
+import {LocalStorageContext} from '../context/LocalStorageProvider'
 
-type hookType = [any, (data: any) => void]
+function useLocalStorage(): [
+  LocalStorageType,
+  (key: keyof LocalStorageType | 'all', value?: any) => void,
+] {
+  const storage = useContext(LocalStorageContext)
 
-const useLocalStorage = (variables: string[] | string | null = null): hookType => {
-  const {data, changeData} = React.useContext(localStorageContext)
-  const keys = Object.keys(data)
-
-  if (variables !== null && Array.isArray(variables)) {
-    const filteredData: {[key: string]: any} = {}
-
-    variables.forEach(variable => {
-      if (!keys.includes(variable)) {
-        chrome.storage.local.set({[variable]: ''})
-        changeData({[variable]: ''})
+  return [
+    storage,
+    (key, value) => {
+      if (value === undefined) {
+        key === 'all'
+          ? chrome.storage.local.clear()
+          : chrome.storage.local.remove(key)
+        return
       }
-      Object.assign(filteredData, {[variable]: data[variable] || ''})
-    })
 
-    return [filteredData, changeData]
-  }
-
-  if (variables !== null && typeof variables === 'string') {
-    if (!keys.includes(variables)) {
-      chrome.storage.local.set({[variables]: ''})
-      changeData({[variables]: ''})
-    }
-
-    const setVariable = (data: any) => {
-      changeData({[variables]: data})
-    }
-
-    return [data[variables], setVariable]
-  }
-
-  return [data, changeData]
+      key === 'all'
+        ? chrome.storage.local.set(value)
+        : chrome.storage.local.set({[key]: value})
+    },
+  ]
 }
 
-export const useSaveStorage = () => {
-  const saveData = React.useContext(saveStorageContext)
-
-  return saveData
-}
-
-export default useLocalStorage
+export {useLocalStorage}

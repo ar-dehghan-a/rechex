@@ -5,7 +5,7 @@ function zipFolder(folderPath, name = 'build') {
   const output = fs.createWriteStream(`${name}.zip`)
   const archive = archiver('zip', {zlib: {level: 9}})
 
-  archive.directory(folderPath, false)
+  archive.directory(folderPath, true)
 
   archive.pipe(output)
   archive.finalize()
@@ -13,4 +13,4 @@ function zipFolder(folderPath, name = 'build') {
   console.log('The file was zipped')
 }
 
-zipFolder('./build', 'build')
+zipFolder('build', 'build')

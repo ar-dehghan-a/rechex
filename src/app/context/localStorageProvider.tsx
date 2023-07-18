@@ -1,51 +1,44 @@
-import React from 'react'
+import React, {createContext, useState, useEffect} from 'react'
 
-type Props = {
+const initLocalStorage = (await chrome.storage.local.get()) as LocalStorageType
+export const LocalStorageContext = createContext<LocalStorageType>(initLocalStorage)
+
+function LocalStorageProvider<T extends LocalStorageType>({
+  children,
+}: {
   children: React.ReactNode
-}
+}) {
+  const [storage, setStorage] = useState<T>(initLocalStorage as T)
 
-type Data = {
-  [key: string]: any
-}
-type StorageContextType = {
-  data: Data
-  changeData: (valueChanged: Data) => void
-}
-
-let localStorage = await chrome.storage.local.get()
-
-export const localStorageContext = React.createContext<StorageContextType>({
-  data: {},
-  changeData: () => {},
-})
-export const saveStorageContext = React.createContext(() => {})
-
-const LocalStorageProvider: React.FC<Props> = ({children}) => {
-  const [data, setData] = React.useState<Data>(localStorage)
-
-  const changeData = React.useCallback((valueChanged: Data) => {
-    setData(prev => ({...prev, ...valueChanged}))
-  }, [])
-
-  const saveData = React.useCallback(async () => {
-    let changes = {}
-    for (const item in data) {
-      if (localStorage[item] !== data[item])
-        changes = {...changes, [item]: data[item]}
+  useEffect(() => {
+    const listener = (
+      changes: {[key: string]: chrome.storage.StorageChange},
+      areaName: string,
+    ) => {
+      if (areaName === 'local') {
+        const newStorage = {...storage}
+        for (const key in changes) {
+          const change = changes[key]
+          if (change.newValue === undefined) {
+            delete newStorage[key as keyof T]
+          } else {
+            newStorage[key as keyof T] = change.newValue
+          }
+        }
+        setStorage(newStorage as T)
+      }
     }
-
-    await chrome.storage.local.set(changes)
-    const newLocalStorage = await chrome.storage.local.get()
-    localStorage = newLocalStorage
-  }, [data, localStorage])
+    chrome.storage.onChanged.addListener(listener)
+    return () => {
+      chrome.storage.onChanged.removeListener(listener)
+    }
+  }, [storage])
 
   return (
-    <localStorageContext.Provider value={{data, changeData}}>
-      <saveStorageContext.Provider value={saveData}>
-        {children}
-      </saveStorageContext.Provider>
-    </localStorageContext.Provider>
+    <LocalStorageContext.Provider value={storage}>
+      {children}
+    </LocalStorageContext.Provider>
   )
 }
 
-export default LocalStorageProvider
+export {LocalStorageProvider}

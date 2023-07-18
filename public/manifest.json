@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Extension Name",
+  "name": "<Extension Name>",
   "version": "0.0.1",
-  "description": "Extension Description",
+  "description": "<Extension Description>",
   "icons": {
     "16": "icons/icon.png",
     "32": "icons/icon.png",
@@ -14,7 +14,7 @@
     "type": "module"
   },
   "action": {
-    "default_title": "Extension Name",
+    "default_title": "<Extension Name>",
     "default_popup": "popup.html"
   },
   "options_page": "options.html",

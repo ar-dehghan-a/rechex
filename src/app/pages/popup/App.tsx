@@ -1,22 +1,20 @@
 import React from 'react'
-import useLocalStorage, {useSaveStorage} from '../../hooks/useLocalStorage'
+import './App.scss'
+import {useLocalStorage} from '../../hooks/useLocalStorage'
 
 const App: React.FC = () => {
-  const [message, setMessage] = useLocalStorage('message')
-  const saveData = useSaveStorage()
+  const [data, setData] = useLocalStorage()
 
   return (
     <div>
-      <h2>{`${message} I am using React in popup page`}</h2>
+      <h2>{`My name is ${data.name}`}</h2>
       <br />
       <input
         type="text"
-        value={message}
-        onChange={e => setMessage(e.target.value)}
+        name="message"
+        value={data.message}
+        onChange={({target: {value}}) => setData('message', value)}
       />
-      <button type="button" onClick={saveData}>
-        save
-      </button>
     </div>
   )
 }
