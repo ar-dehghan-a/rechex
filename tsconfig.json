@@ -2,19 +2,20 @@
   "compilerOptions": {
     "strict": true,
     "outDir": "./build",
-    "target": "ESNext",
+    "target": "ES2017",
     "module": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": true,
+    "jsx": "react",
+    "isolatedModules": false,
+    "noImplicitAny": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": false,
-    "jsx": "react-jsx"
+    "moduleResolution": "Node",
+    "resolveJsonModule": true
   },
   "include": ["src"],
   "exclude": ["./build/**/*", "./node_modules"]
