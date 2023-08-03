@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
+const Dotenv = require('dotenv-webpack')
 
 module.exports = {
   entry: {
@@ -38,9 +39,10 @@ module.exports = {
   },
   plugins: [
     new webpack.ProgressPlugin(),
+    new Dotenv(),
     new MiniCssExtractPlugin(),
     new CopyPlugin({
-      patterns: [{from: './public'}],
+      patterns: [{from: 'public', to: './'}],
     }),
     ...getHtmlPlugins(['popup', 'options']),
   ],
