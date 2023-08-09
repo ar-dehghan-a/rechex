@@ -3,12 +3,22 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
+const glob = require('glob')
+
+const injectionScripts = glob
+  .sync('./src/injectionScripts/*.ts')
+  .reduce((entries, entry) => {
+    const fileName = entry.match(/([^\\\/]+)\.\w+$/)[1]
+    entries['injectionScripts/' + fileName] = './' + entry.replace(/\\/g, '/')
+    return entries
+  }, {})
 
 module.exports = {
   entry: {
     popup: './src/app/pages/popup/index.tsx',
     options: './src/app/pages/options/index.tsx',
-    ...getEntry(['background', 'contentScripts'], 'ts'),
+    background: './src/background.ts',
+    ...injectionScripts,
   },
   output: {
     filename: '[name].js',
@@ -33,7 +43,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', 'jsx'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
   plugins: [
     new webpack.ProgressPlugin(),
@@ -54,12 +64,4 @@ module.exports = {
       chunks: 'options',
     }),
   ],
-}
-
-function getEntry(chunks, ext) {
-  const entries = {}
-  for (const entry of chunks) {
-    Object.assign(entries, {[`${entry}`]: `./src/${entry}.${ext}`})
-  }
-  return entries
 }

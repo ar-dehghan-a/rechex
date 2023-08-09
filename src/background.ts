@@ -1,6 +1,6 @@
 const initialValue: LocalStorageType = {
   name: 'rechex',
-  message: 'hello world!',
+  message: 'hello from rechex',
 }
 
 chrome.runtime.onInstalled.addListener(({reason}) => {
