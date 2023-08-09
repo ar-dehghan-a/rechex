@@ -2,9 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const TerserPlugin = require('terser-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
-const Dotenv = require('dotenv-webpack')
 
 module.exports = {
   entry: {
@@ -39,20 +37,23 @@ module.exports = {
   },
   plugins: [
     new webpack.ProgressPlugin(),
-    new Dotenv(),
     new MiniCssExtractPlugin(),
     new CopyPlugin({
       patterns: [{from: 'public', to: './'}],
     }),
-    ...getHtmlPlugins(['popup', 'options']),
+    new HtmlWebpackPlugin({
+      title: 'Rechex',
+      filename: 'popup.html',
+      template: './index.html',
+      chunks: 'popup',
+    }),
+    new HtmlWebpackPlugin({
+      title: 'options',
+      filename: 'options.html',
+      template: './index.html',
+      chunks: 'options',
+    }),
   ],
-  optimization: {
-    minimizer: [
-      new TerserPlugin({
-        extractComments: false,
-      }),
-    ],
-  },
 }
 
 function getEntry(chunks, ext) {
@@ -61,16 +62,4 @@ function getEntry(chunks, ext) {
     Object.assign(entries, {[`${entry}`]: `./src/${entry}.${ext}`})
   }
   return entries
-}
-
-function getHtmlPlugins(chunks) {
-  return chunks.map(
-    chunk =>
-      new HtmlWebpackPlugin({
-        title: '<Extension Name>',
-        filename: `${chunk}.html`,
-        template: './index.html',
-        chunks: [chunk],
-      }),
-  )
 }
