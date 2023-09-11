@@ -1,17 +1,16 @@
-const path = require('path')
-const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const CopyPlugin = require('copy-webpack-plugin')
-const glob = require('glob')
+const path = require('path');
+const webpack = require('webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+const glob = require('glob');
 
 const injectionScripts = glob
   .sync('./src/injectionScripts/*.ts')
   .reduce((entries, entry) => {
-    const fileName = entry.match(/([^\\\/]+)\.\w+$/)[1]
-    entries['injectionScripts/' + fileName] = './' + entry.replace(/\\/g, '/')
-    return entries
-  }, {})
+    const fileName = entry.match(/([^\\/]+)\.\w+$/)[1];
+    entries['injectionScripts/' + fileName] = './' + entry.replace(/\\/g, '/');
+    return entries;
+  }, {});
 
 module.exports = {
   entry: {
@@ -22,7 +21,7 @@ module.exports = {
   },
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, './build'),
+    path: path.join(__dirname, './build'),
     clean: true,
   },
   module: {
@@ -51,17 +50,5 @@ module.exports = {
     new CopyPlugin({
       patterns: [{from: 'public', to: './'}],
     }),
-    new HtmlWebpackPlugin({
-      title: 'Rechex',
-      filename: 'popup.html',
-      template: './index.html',
-      chunks: ['popup'],
-    }),
-    new HtmlWebpackPlugin({
-      title: 'options',
-      filename: 'options.html',
-      template: './index.html',
-      chunks: ['options'],
-    }),
   ],
-}
+};

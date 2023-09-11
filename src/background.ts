@@ -1,3 +1,5 @@
+import {LocalStorageType} from './types/index.type'
+
 const initialValue: LocalStorageType = {
   name: 'rechex',
   message: 'hello from rechex',

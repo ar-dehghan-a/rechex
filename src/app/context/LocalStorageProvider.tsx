@@ -1,4 +1,5 @@
 import React, {createContext, useState, useEffect} from 'react'
+import {LocalStorageType} from '../../types/index.type'
 
 const initLocalStorage = (await chrome.storage.local.get()) as LocalStorageType
 export const LocalStorageContext = createContext<LocalStorageType>(initLocalStorage)

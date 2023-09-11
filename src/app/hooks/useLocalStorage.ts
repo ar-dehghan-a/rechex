@@ -1,5 +1,6 @@
 import {useContext} from 'react'
 import {LocalStorageContext} from '../context/LocalStorageProvider'
+import {LocalStorageType} from '../../types/index.type'
 
 function useLocalStorage(): [
   LocalStorageType,
