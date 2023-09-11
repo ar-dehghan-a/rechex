@@ -55,13 +55,13 @@ module.exports = {
       title: 'Rechex',
       filename: 'popup.html',
       template: './index.html',
-      chunks: 'popup',
+      chunks: ['popup'],
     }),
     new HtmlWebpackPlugin({
       title: 'options',
       filename: 'options.html',
       template: './index.html',
-      chunks: 'options',
+      chunks: ['options'],
     }),
   ],
 }
