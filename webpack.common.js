@@ -5,7 +5,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const glob = require('glob');
 
 const injectionScripts = glob
-  .sync('./src/injectionScripts/*.ts')
+  .sync('./src/injectionScripts/*.{ts,js,mts,mjs}')
   .reduce((entries, entry) => {
     const fileName = entry.match(/([^\\/]+)\.\w+$/)[1];
     entries['injectionScripts/' + fileName] = './' + entry.replace(/\\/g, '/');
@@ -27,7 +27,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(ts|tsx|js|jsx)$/,
+        test: /\.(ts|mts|tsx|js|mjs|jsx)$/,
         use: 'ts-loader',
         exclude: /node_modules/,
       },

@@ -1,16 +1,16 @@
-const fs = require('fs')
-const archiver = require('archiver')
+const fs = require('fs');
+const archiver = require('archiver');
 
 function zipFolder(folderPath, name = 'build') {
-  const output = fs.createWriteStream(`${name}.zip`)
-  const archive = archiver('zip', {zlib: {level: 9}})
+  const output = fs.createWriteStream(`${name}.zip`);
+  const archive = archiver('zip', {zlib: {level: 9}});
 
-  archive.directory(folderPath, true)
+  archive.directory(folderPath, true);
 
-  archive.pipe(output)
-  archive.finalize()
+  archive.pipe(output);
+  archive.finalize();
 
-  console.log('The file was zipped')
+  console.log('The file was zipped');
 }
 
-zipFolder('build', 'build')
+zipFolder('build', 'build');

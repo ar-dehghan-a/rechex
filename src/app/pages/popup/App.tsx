@@ -1,9 +1,9 @@
-import React from 'react'
-import './App.scss'
-import {useLocalStorage} from '../../hooks/useLocalStorage'
+import React from 'react';
+import './App.scss';
+import {useLocalStorage} from '../../hooks/useLocalStorage';
 
 const App: React.FC = () => {
-  const [data, setData] = useLocalStorage()
+  const [data, setData] = useLocalStorage();
 
   return (
     <div>
@@ -16,7 +16,7 @@ const App: React.FC = () => {
         onChange={({target: {value}}) => setData('message', value)}
       />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

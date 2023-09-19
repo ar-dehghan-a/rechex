@@ -4,7 +4,7 @@
   "scripts": {
     "watch": "webpack --watch --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "format": "prettier --write --ignore-unknown \"{public,src}/**/*.{css,js,ts,json}\""
+    "format": "prettier --write --ignore-unknown \"{public,src}/**/*.{css,js,ts,tsx,json}\""
   },
   "keywords": [],
   "author": "Alireza Dehghan Ashkezari",

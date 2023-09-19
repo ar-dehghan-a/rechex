@@ -1,7 +1,7 @@
-const {merge} = require('webpack-merge')
-const TerserPlugin = require('terser-webpack-plugin')
-const WebpackShellPlugin = require('webpack-shell-plugin-next')
-const common = require('./webpack.common.js')
+const {merge} = require('webpack-merge');
+const TerserPlugin = require('terser-webpack-plugin');
+const WebpackShellPlugin = require('webpack-shell-plugin-next');
+const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
   mode: 'production',
@@ -16,9 +16,7 @@ module.exports = merge(common, {
     new WebpackShellPlugin({
       onBuildEnd: {
         scripts: ['node zipping.js'],
-        blocking: false,
-        parallel: true,
       },
     }),
   ],
-})
+});
