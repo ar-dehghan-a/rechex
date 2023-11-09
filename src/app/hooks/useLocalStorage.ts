@@ -1,28 +1,40 @@
-import {useContext} from 'react';
-import {LocalStorageContext} from '../context/LocalStorageProvider';
-import {LocalStorageType} from '../../types/index.type';
+import {useEffect, useState} from 'react';
 
-function useLocalStorage(): [
-  LocalStorageType,
-  (key: keyof LocalStorageType | 'all', value?: any) => void
-] {
-  const storage = useContext(LocalStorageContext);
+function useChromeLocalStorage<T>(
+  key: string,
+  initialValue: T,
+  sync?: boolean
+): [value: T, setLocalStorage: (newValue: T) => void] {
+  const [value, setValue] = useState<T>(initialValue);
 
-  return [
-    storage,
-    (key, value) => {
-      if (value === undefined) {
-        key === 'all'
-          ? chrome.storage.local.clear()
-          : chrome.storage.local.remove(key);
-        return;
-      }
+  useEffect(() => {
+    chrome.storage.local.get([key], result => {
+      if (result[key]) setValue(result[key]);
+    });
+  }, [key]);
 
-      key === 'all'
-        ? chrome.storage.local.set(value)
-        : chrome.storage.local.set({[key]: value});
-    },
-  ];
+  if (sync)
+    useEffect(() => {
+      const listener = (
+        changes: {[key: string]: chrome.storage.StorageChange},
+        areaName: string
+      ) => {
+        if (areaName === 'local')
+          for (const changedKey in changes)
+            if (changedKey === key) setValue(changes[changedKey].newValue);
+      };
+      chrome.storage.onChanged.addListener(listener);
+      return () => {
+        chrome.storage.onChanged.removeListener(listener);
+      };
+    }, [value]);
+
+  const setLocalStorage = (newValue: any) => {
+    setValue(newValue);
+    chrome.storage.local.set({[key]: newValue});
+  };
+
+  return [value, setLocalStorage];
 }
 
-export {useLocalStorage};
+export default useChromeLocalStorage;

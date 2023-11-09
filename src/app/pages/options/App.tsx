@@ -1,32 +1,23 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import './App.scss';
-import {useLocalStorage} from '../../hooks/useLocalStorage';
+import useChromeLocalStorage from '../../hooks/useLocalStorage';
 
 const App: React.FC = () => {
-  const [local, setLocal] = useLocalStorage();
-  const [data, setData] = useState(local);
-
-  const dataHandler = (target: HTMLInputElement) => {
-    const {name, value} = target;
-    setData(prev => ({...prev, [name]: value}));
-  };
-
-  useEffect(() => {
-    setData(local);
-  }, [local]);
+  const [name] = useChromeLocalStorage('name', 'rechex');
+  const [message, setMessage] = useChromeLocalStorage(
+    'message',
+    'hello from rechex'
+  );
 
   return (
     <div>
-      <h2>{`My name is ${data.name}`}</h2>
+      <h2>{`My name is ${name}`}</h2>
       <br />
       <input
         type="text"
-        name="message"
-        value={data.message}
-        onChange={({target}) => dataHandler(target)}
+        value={message}
+        onChange={({target: {value}}) => setMessage(value)}
       />
-      <br />
-      <button onClick={() => setLocal('all', data)}>save</button>
     </div>
   );
 };
