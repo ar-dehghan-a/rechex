@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 function useChromeLocalStorage<T>(
   key: string,
   initialValue: T,
-  sync?: boolean
+  sync: boolean = false
 ): [value: T, setLocalStorage: (newValue: T) => void] {
   const [value, setValue] = useState<T>(initialValue);
 

@@ -5,10 +5,10 @@ const CopyPlugin = require('copy-webpack-plugin');
 const glob = require('glob');
 
 const injectionScripts = glob
-  .sync('./src/injectionScripts/*.{ts,js,mts,mjs}')
+  .sync('./src/scripts/*.{ts,js,mts,mjs}')
   .reduce((entries, entry) => {
     const fileName = entry.match(/([^\\/]+)\.\w+$/)[1];
-    entries['injectionScripts/' + fileName] = './' + entry.replace(/\\/g, '/');
+    entries['scripts/' + fileName] = './' + entry.replace(/\\/g, '/');
     return entries;
   }, {});
 
