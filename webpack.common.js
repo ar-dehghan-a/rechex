@@ -39,6 +39,7 @@ const generateHtmlPlugins = () => {
   ];
 
   return entries.map(entry => {
+    if (entry === undefined) return;
     const entryName = path.basename(path.dirname(entry));
     return new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './index.html'),
