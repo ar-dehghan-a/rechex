@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.scss';
-import useChromeLocalStorage from '../../hooks/useLocalStorage';
+import useChromeLocalStorage from '@/hooks/useLocalStorage';
 
 const App: React.FC = () => {
   const [name] = useChromeLocalStorage('name', 'rechex');

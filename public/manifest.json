@@ -15,9 +15,9 @@
   },
   "action": {
     "default_title": "Rechex",
-    "default_popup": "popup.html"
+    "default_popup": "popup/index.html"
   },
-  "options_page": "options.html",
+  "options_page": "options/index.html",
   "permissions": [
     "storage"
   ],
@@ -27,7 +27,7 @@
         "<all_urls>"
       ],
       "js": [
-        "./injectionScripts/hello.js"
+        "./scripts/hello.js"
       ]
     }
   ]
