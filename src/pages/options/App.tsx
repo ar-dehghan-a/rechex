@@ -18,6 +18,7 @@ const App: React.FC = () => {
         value={message}
         onChange={({target: {value}}) => setMessage(value)}
       />
+      <p>Edit src/pages/options/App.tsx</p>
     </div>
   );
 };

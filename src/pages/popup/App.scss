@@ -1,10 +1,20 @@
 html,
 body {
   height: fit-content;
-  width: 230px;
+  width: 230px; // maximum size of width is 800px
 }
 
 body {
   padding: 10px 12px;
+}
+
+h2 {
   color: blue;
+}
+
+p {
+  color: black;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 10px;
 }
