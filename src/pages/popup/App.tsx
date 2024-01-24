@@ -1,25 +1,35 @@
 import React from 'react';
+import useChromeLocalStorage from '../../hooks/useLocalStorage';
 import './App.scss';
-import useChromeLocalStorage from '@/hooks/useLocalStorage';
 
 const App: React.FC = () => {
-  const [name] = useChromeLocalStorage('name', 'rechex');
-  const [message, setMessage] = useChromeLocalStorage(
-    'message',
-    'hello from rechex'
-  );
+  const [counter, setCounter, clearCounter] = useChromeLocalStorage('counter', 0);
 
   return (
-    <div>
-      <h2>{`My name is ${name}`}</h2>
-      <br />
-      <input
-        type="text"
-        value={message}
-        onChange={({target: {value}}) => setMessage(value)}
-      />
-      <p>Edit src/pages/popup/App.tsx</p>
-    </div>
+    <>
+      <h1 className="text-lg font-medium mb-2">
+        My name is <span className="text-cyan-400">RE</span>
+        <span className="text-yellow-400">CH</span>
+        <span className="text-red-600">EX</span>
+      </h1>
+
+      <div className="mb-2">
+        <button
+          className="p-2 bg-cyan-100 border border-red-950 rounded-md"
+          onClick={() => setCounter(counter + 1)}
+        >
+          Counter: {counter}
+        </button>
+      </div>
+
+      <div className="mb-2">
+        <button className="p-1 bg-red-100 rounded" onClick={() => clearCounter()}>
+          Clear Counter
+        </button>
+      </div>
+
+      <p className="font-medium">Edit src/pages/popup/App.tsx</p>
+    </>
   );
 };
 

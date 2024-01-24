@@ -80,7 +80,12 @@ module.exports = {
       },
       {
         test: /\.(s[ac]ss|css)$/i,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader',
+          'postcss-loader',
+        ],
       },
       {
         test: /\.(jpg|jpeg|png|woff|woff2|eot|ttf|svg)$/,
@@ -90,9 +95,6 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
-    alias: {
-      '@': path.resolve(__dirname, 'src'),
-    },
   },
   plugins: [
     new webpack.ProgressPlugin(),
