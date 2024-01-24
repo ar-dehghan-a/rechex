@@ -4,7 +4,11 @@ function useChromeLocalStorage<T>(
   key: string,
   initialValue: T,
   sync: boolean = false
-): [value: T, setLocalStorage: (newValue: T) => void] {
+): [
+  value: T,
+  setLocalStorage: (newValue: T) => void,
+  clearLocalStorage: () => void
+] {
   const [value, setValue] = useState<T>(initialValue);
 
   useEffect(() => {
@@ -23,10 +27,9 @@ function useChromeLocalStorage<T>(
           for (const changedKey in changes)
             if (changedKey === key) setValue(changes[changedKey].newValue);
       };
+
       chrome.storage.onChanged.addListener(listener);
-      return () => {
-        chrome.storage.onChanged.removeListener(listener);
-      };
+      return () => chrome.storage.onChanged.removeListener(listener);
     }, [value]);
 
   const setLocalStorage = (newValue: any) => {
@@ -34,7 +37,11 @@ function useChromeLocalStorage<T>(
     chrome.storage.local.set({[key]: newValue});
   };
 
-  return [value, setLocalStorage];
+  const clearLocalStorage = () => {
+    chrome.storage.local.remove(key);
+  };
+
+  return [value, setLocalStorage, clearLocalStorage];
 }
 
 export default useChromeLocalStorage;
