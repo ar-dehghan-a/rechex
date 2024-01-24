@@ -1,1 +1,1 @@
-chrome.storage.local.get().then(result => console.log(result));
+chrome.storage.local.get(['message']).then(({message}) => console.log(message));
