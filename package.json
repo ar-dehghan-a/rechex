@@ -1,6 +1,6 @@
 {
   "name": "rechex",
-  "version": "2.0.1",
+  "version": "2.1.1",
   "scripts": {
     "watch": "webpack --watch --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",

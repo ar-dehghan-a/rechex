@@ -24,7 +24,7 @@ const App: React.FC = () => {
 
       <div className="mb-2">
         <button className="p-1 bg-red-100 rounded" onClick={() => clearCounter()}>
-          Clear Counter
+          Clear local storage
         </button>
       </div>
 

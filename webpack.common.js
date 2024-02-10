@@ -7,7 +7,7 @@ const glob = require('glob');
 
 const findExistingFile = (
   basePath,
-  files = ['index.tsx', 'index.js', 'index.jsx']
+  files = ['index.ts', 'index.tsx', 'index.js', 'index.jsx']
 ) => {
   const foundFiles = [];
   for (const file of files) {
@@ -64,7 +64,7 @@ module.exports = {
     ...getPageFiles('popup'),
     ...getPageFiles('options'),
     ...injectionScripts,
-    background: './src/background.ts',
+    background: './src/background.mts',
   },
   output: {
     filename: '[name].js',
