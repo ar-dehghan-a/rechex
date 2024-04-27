@@ -9,9 +9,7 @@
 </p>
 
 <p align="center">
-    <img alt="" src="https://img.shields.io/npm/v/next.svg?style=for-the-badge&labelColor=000000">
-    <img alt="" src="https://img.shields.io/npm/l/next.svg?style=for-the-badge&labelColor=000000">
-    <img alt="" src="https://raw.githubusercontent.com/Safouene1/support-palestine-banner/master/StandWithPalestine.svg">
+<img alt="Free Palestine" src="https://raw.githubusercontent.com/Safouene1/support-palestine-banner/master/StandWithPalestine.svg">
 </p>
 
 # React Chrome Extension (RECHEX)
@@ -44,3 +42,5 @@ npm run build
 ## Install Extension in Chrome
 
 ![Install Extension in Chrome](https://developer.chrome.com/static/docs/extensions/get-started/tutorial/hello-world/image/extensions-page-e0d64d89a6acf_856.png 'Install Extension in Chrome')
+
+or drag the build file and drop it on the extensions page
