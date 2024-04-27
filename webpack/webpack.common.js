@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const glob = require('glob');
+const projectRoot = process.cwd();
 
 const findExistingFile = (
   basePath,
@@ -11,10 +12,8 @@ const findExistingFile = (
 ) => {
   const foundFiles = [];
   for (const file of files) {
-    const filePath = path.resolve(__dirname, path.join(basePath, file));
-    if (glob.sync(filePath).length > 0) {
-      foundFiles.push(filePath);
-    }
+    const filePath = path.resolve(projectRoot, path.join(basePath, file));
+    if (glob.sync(filePath).length > 0) foundFiles.push(filePath);
   }
 
   if (foundFiles.length > 1)
@@ -42,7 +41,7 @@ const generateHtmlPlugins = () => {
     if (entry === undefined) return;
     const entryName = path.basename(path.dirname(entry));
     return new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './index.html'),
+      template: path.resolve(projectRoot, './index.html'),
       filename: `${entryName}/index.html`,
       chunks: [`${entryName}/${entryName}`],
       scriptLoading: 'blocking',
@@ -51,24 +50,25 @@ const generateHtmlPlugins = () => {
   });
 };
 
-const injectionScripts = glob
-  .sync('./src/scripts/*.{ts,js,mts,mjs}')
-  .reduce((entries, entry) => {
-    const fileName = path.basename(entry, path.extname(entry));
-    entries[`scripts/${fileName}`] = path.resolve(__dirname, entry);
-    return entries;
-  }, {});
+const injectionScripts = () =>
+  glob
+    .sync(path.resolve(projectRoot, './src/scripts/*.{ts,js,mts,mjs}'))
+    .reduce((entries, entry) => {
+      const fileName = path.basename(entry, path.extname(entry));
+      entries[`scripts/${fileName}`] = path.resolve(projectRoot, entry);
+      return entries;
+    }, {});
 
 module.exports = {
   entry: {
     ...getPageFiles('popup'),
     ...getPageFiles('options'),
-    ...injectionScripts,
+    ...injectionScripts(),
     background: './src/background.mts',
   },
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve(projectRoot, 'build'),
     clean: true,
   },
   module: {
