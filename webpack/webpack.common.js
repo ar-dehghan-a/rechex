@@ -31,6 +31,19 @@ const getPageFiles = page => {
   return filePath ? {[`${page}/${page}`]: filePath} : {};
 };
 
+const injectionScripts = () => {
+  const scriptsDir = path.resolve(projectRoot, './src/scripts/');
+  const files = glob.sync(scriptsDir + '/*.{ts,mts,js,mjs}');
+
+  const entries = files.reduce((acc, filePath) => {
+    const fileName = path.basename(filePath, path.extname(filePath));
+    acc[`scripts/${fileName}`] = path.resolve(projectRoot, filePath);
+    return acc;
+  }, {});
+
+  return entries;
+};
+
 const generateHtmlPlugins = () => {
   const entries = [
     findExistingFile('./src/pages/popup'),
@@ -50,25 +63,16 @@ const generateHtmlPlugins = () => {
   });
 };
 
-const injectionScripts = () =>
-  glob
-    .sync(path.resolve(projectRoot, './src/scripts/*.{ts,js,mts,mjs}'))
-    .reduce((entries, entry) => {
-      const fileName = path.basename(entry, path.extname(entry));
-      entries[`scripts/${fileName}`] = path.resolve(projectRoot, entry);
-      return entries;
-    }, {});
-
 module.exports = {
   entry: {
     ...getPageFiles('popup'),
     ...getPageFiles('options'),
     ...injectionScripts(),
-    background: './src/background.mts',
+    background: path.resolve(projectRoot, './src/background.ts'),
   },
   output: {
     filename: '[name].js',
-    path: path.resolve(projectRoot, 'build'),
+    path: path.resolve(projectRoot, './build'),
     clean: true,
   },
   module: {
